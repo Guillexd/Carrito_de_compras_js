@@ -1,0 +1,34 @@
+
+
+[
+    { "img": "imagenes/papas.jpg", "nombre": "Papa", "descripcion": "Papas calidad-precio", "precio": "1", "id": "1",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/cebollin.jpg", "nombre": "Cebollín", "descripcion": "Cebollines calidad-precio", "precio": "1.2", "id": "2",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/pina.jpg", "nombre": "Piña", "descripcion": "Piñas calidad-precio", "precio": "2.1", "id": "3",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/fresa.jpg", "nombre": "Fresa", "descripcion": "Fresas calidad-precio", "precio": "0.6", "id": "4",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/cebolla.jpg", "nombre": "Cebolla", "descripcion": "Cebollas calidad-precio", "precio": "0.4", "id": "5",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/lechuga.jpg", "nombre": "Lechuga", "descripcion": "Lechugas calidad-precio", "precio": "0.9", "id": "6",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/palta.jpg", "nombre": "Palta", "descripcion": "Paltas calidad-precio", "precio": "3.1", "id": "7",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/platano.jpg", "nombre": "Plátano", "descripcion": "Plátanos calidad-precio", "precio": "1.7", "id": "8",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/pan.jpg", "nombre": "Pan", "descripcion": "Panes calidad-precio", "precio": "0.1", "id": "9",
+        "cantidad": "1"
+    },
+    { "img": "imagenes/agua.jpg", "nombre": "Agua", "descripcion": "Agua calidad-precio", "precio": "1", "id": "10",
+        "cantidad": "1"
+    }
+]

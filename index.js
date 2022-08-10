@@ -1,13 +1,12 @@
-import infoDeProductos from "./productos.js";
 
 //documento
 const d = document;
 //variables
 const $main = d.querySelector("main"),
-$aside= d.querySelector("aside"),
-$fragment = d.createDocumentFragment(),
-$header = d.querySelector("header"),
-$contadorDelCArrito = d.querySelector(".contadorDelCarrito");
+    $aside = d.querySelector("aside"),
+    $fragment = d.createDocumentFragment(),
+    $header = d.querySelector("header"),
+    $contadorDelCArrito = d.querySelector(".contadorDelCarrito");
 
 //creación del localStorage
 // if(!localStorage.getItem("Carrito")){
@@ -23,14 +22,16 @@ $contadorDelCArrito = d.querySelector(".contadorDelCarrito");
 //usando el operador terniario
 localStorage.getItem("Carrito") ? null : localStorage.setItem("Carrito", "[]")
 
-function crearCards(){
+function crearCards() {
     //recorremos el array de productos
-    infoDeProductos.forEach((obj) => {
-    //crea una sección y agrego el HTML al fragment
-    const $section = d.createElement("section");
-    $section.classList.add("productos")
+    fetch("./productos.json").then(resp => resp.json())
+    .then(data => {
+        data.forEach((obj) => {
+            //crea una sección y agrego el HTML al fragment
+            const $section = d.createElement("section");
+            $section.classList.add("productos")
 
-    $section.innerHTML = `
+            $section.innerHTML = `
         <img src="${obj.img}" alt="${obj.nombre}">
         <h4>Nombre: ${obj.nombre}</h4>
         <p>${obj.descripcion}</p>
@@ -38,15 +39,31 @@ function crearCards(){
         <button class="botonProd" id="${obj.id}">Comprar</button>
         `;
 
-        $fragment.appendChild($section);
+            $fragment.appendChild($section);
 
-    });
-    //agrego el fragment a main
-    $main.appendChild($fragment);
+        });
+        //agrego el fragment a main
+        $main.appendChild($fragment);
+
+        //hago que los botones de deshabiliten si es que fueron seleccionado y guardados en el localStorage
+        const botones = $main.querySelectorAll(".botonProd");
+        const array = JSON.parse(localStorage.getItem("Carrito"));
+        for (const item of array) {
+
+            for (const btns of botones) {
+
+                if (item.id == btns.id) {
+                    btns.disabled = true;
+                    btns.innerText = "Comprado";
+
+                }
+            }
+        }
+    })
 }
 
 //funcion para cargar los eventos iniciales
-function cargandoEvents(){
+function cargandoEvents() {
     $main.addEventListener("click", agregarProducto);//evento para agregar productos
     //eventos para mostrar el Carrito
     $header.addEventListener("click", mostrarCarrito);
@@ -61,7 +78,7 @@ function cargandoEvents(){
 }
 
 // Funciones de Eventos DOMContentLoaded para que imprima las carts con el localStorage
-d.addEventListener("DOMContentLoaded", ()=>{
+d.addEventListener("DOMContentLoaded", () => {
     //modoOscuro
     if (localStorage.getItem("modoOscuro") === "oscuro") {
         d.querySelector("body").classList.add("dark");
@@ -70,13 +87,13 @@ d.addEventListener("DOMContentLoaded", ()=>{
         d.querySelector("body").classList.remove("dark");
         $main.querySelector("#darkTheme").textContent = "🌑";
     };
-    
+
     //funcion para crear las cartas de los productos y lo llamamos
     crearCards();
     //funcion para cargar los eventos iniciales
     cargandoEvents();
     //convierto el localStorage a un array de objetos
-    const array = JSON.parse(localStorage.getItem("Carrito"));
+    let array = JSON.parse(localStorage.getItem("Carrito"));
     //pongo en el carrito la cantidad de productos agregados
     $contadorDelCArrito.innerHTML = array.length;
     //primer div del aside
@@ -116,25 +133,14 @@ d.addEventListener("DOMContentLoaded", ()=>{
 
     //llamo una función 
     actualizarCarrito();
-
-    //hago que los botones de deshabiliten si es que fueron seleccionado y guardados en el localStorage
-    const botones = $main.querySelectorAll("button");
-    for (const item of array) {
-        for (const btns of botones) {
-            if (item.id == btns.id) {
-                btns.disabled = true;
-                btns.innerText = "Comprado";
-            }
-        }
-    }
 });
 
 //declarando las funciones anindadas
 
-function agregarProducto(e){
+function agregarProducto(e) {
 
     //comprobamos si el evento fue en un boton
-    if(e.target.matches("button")){
+    if (e.target.matches("button")) {
         const name = e.target.parentElement;
         //usando la librería toastify
         Toastify({
@@ -144,19 +150,21 @@ function agregarProducto(e){
             gravity: "top", // `top` or `bottom`,
             position: "right", // `left`, `center` or `right`,
             stopOnFocus: true, // Prevents dismissing of toast on hover,
-            className : "tostadas"
+            className: "tostadas"
         }).showToast();
-        //convierto el localStorage a un array de objetos
-        const array = JSON.parse(localStorage.getItem("Carrito"));
+        fetch("./productos.json").then(resp => resp.json())
+        .then(data => {
+            //convierto el localStorage a un array de objetos
+            const array = JSON.parse(localStorage.getItem("Carrito"));
 
-        //hago uso del LocalStorage para  guardar el elemento seleccionado
-        const productoClickeado = infoDeProductos.find(obj => obj.id == e.target.id); 
-        //agrego el elemento al localStorage
-        array.push(productoClickeado);
-        //pongo en el carrito la cantidad de productos agregados
-        $contadorDelCArrito.innerHTML = array.length;
-        //devolvemos el contenido  inicial del carrito, borrando lo demas si es que fue agregado
-        $aside.innerHTML = `
+            //hago uso del LocalStorage para  guardar el elemento seleccionado
+            const productoClickeado = data.find(obj => obj.id == e.target.id);
+            //agrego el elemento al localStorage
+            array.push(productoClickeado);
+            //pongo en el carrito la cantidad de productos agregados
+            $contadorDelCArrito.innerHTML = array.length;
+            //devolvemos el contenido  inicial del carrito, borrando lo demas si es que fue agregado
+            $aside.innerHTML = `
             <div id="containerProd"></div>
 
             <a id="precioTotal" class="text-decoration-none text-info" href="paginas/carrito.html" target="_blank" rel="noopener noreferrer">
@@ -166,13 +174,13 @@ function agregarProducto(e){
             <button id="vaciarCarrito">Vaciar carrito</button>
         `;
 
-        //recorremos el localStorage e imprimimos los productos en el carrito
-        array.forEach((obj) => {
-            const $section = d.createElement("section");
-            $section.classList.add("cards");
-            $section.classList.add("d-flex");
-            $section.classList.add("justify-content-evenly");
-            $section.innerHTML = `
+            //recorremos el localStorage e imprimimos los productos en el carrito
+            array.forEach((obj) => {
+                const $section = d.createElement("section");
+                $section.classList.add("cards");
+                $section.classList.add("d-flex");
+                $section.classList.add("justify-content-evenly");
+                $section.innerHTML = `
                 <div class="divImagen">
                     <img src="${obj.img}" alt="${obj.nombre}">
                 </div>
@@ -190,41 +198,42 @@ function agregarProducto(e){
                 <i id="trash${obj.id}" class="fa-solid fa-trash notification-alert"></i>
                 `;
 
-            $fragment.prepend($section);
+                $fragment.prepend($section);
 
-            //a cada section le agrego un boton con un evento para quitar un producto
-            $section.querySelector(`#trash${obj.id}`).addEventListener('click', quitarProducto);
-        });
+                //a cada section le agrego un boton con un evento para quitar un producto
+                $section.querySelector(`#trash${obj.id}`).addEventListener('click', quitarProducto);
+            });
 
-        const $containerProd = d.querySelector("#containerProd");
-        //agregamos el fragment al aside
-        $containerProd.prepend($fragment)//pone de primer hijo 
+            const $containerProd = d.querySelector("#containerProd");
+            //agregamos el fragment al aside
+            $containerProd.prepend($fragment)//pone de primer hijo 
 
-        //hago que los botones de deshabiliten si es que fueron seleccionado y guardados en el localStorage
-        const botones = $main.querySelectorAll("button");
+            //hago que los botones de deshabiliten si es que fueron seleccionado y guardados en el localStorage
+            const botones = $main.querySelectorAll("button");
 
-        for (const item of array) {
-            for (const btns of botones) {
-                if (item.id == btns.id) {
-                    btns.disabled = true;
-                    btns.innerText = "Comprado";
+            for (const item of array) {
+                for (const btns of botones) {
+                    if (item.id == btns.id) {
+                        btns.disabled = true;
+                        btns.innerText = "Comprado";
+                    }
                 }
             }
-        }
 
-        // Convierto el array a string y lo envio al local storage.
-        localStorage.setItem("Carrito", JSON.stringify(array));
-        
-        //evento para poder vaciar el carrito de compras, otra vez (x2)
-        d.querySelector("#vaciarCarrito").addEventListener("click", vaciarCarrito);
+            // Convierto el array a string y lo envio al local storage.
+            localStorage.setItem("Carrito", JSON.stringify(array));
 
-        //llamo una función 
-        actualizarCarrito();
+            //evento para poder vaciar el carrito de compras, otra vez (x2)
+            d.querySelector("#vaciarCarrito").addEventListener("click", vaciarCarrito);
+
+            //llamo una función 
+            actualizarCarrito();
+        })
     }
 }
 
 //función para actualizar el precio total de todos los productos añadidos
-function actualizarCarrito(){
+function actualizarCarrito() {
 
     //cambio el precio Total cada vez que haya un cambio
     let total = 0;
@@ -236,7 +245,7 @@ function actualizarCarrito(){
         const $cantidadProductos = obj.querySelector("#contador");
 
         const precioUnitarioReemplazo = parseFloat($precioUnitario.replace('$', '')).toFixed(2);
-        
+
         const cantidadProductosReemplazo = parseInt($cantidadProductos.textContent);
 
         total += (precioUnitarioReemplazo * cantidadProductosReemplazo);
@@ -251,7 +260,7 @@ function actualizarCarrito(){
 //función para quitar los productos del carrito
 function quitarProducto(e) {
     //función autoinvocada
-    (()=> {
+    (() => {
         Swal.fire({
             title: '¡Advertencia!',
             text: 'Este producto se eliminará, ¿estás seguro?',
@@ -265,7 +274,7 @@ function quitarProducto(e) {
                 popup: "contenedor"
             }
         }).then(resolve => {
-            if(resolve.isConfirmed){
+            if (resolve.isConfirmed) {
                 //hago uso del LocalStorage para el elemento eliminado
                 const array = JSON.parse(localStorage.getItem("Carrito"));
                 for (const item of array) {
@@ -324,7 +333,7 @@ function quitarProducto(e) {
 //función para vaciar el carrito
 function vaciarCarrito() {
 
-    (()=>{
+    (() => {
         Swal.fire({
             title: '¡Advertencia!',
             text: 'El carrito se vaciará por completo, ¿estás seguro?',
@@ -338,7 +347,7 @@ function vaciarCarrito() {
                 popup: "contenedor"
             }
         }).then(resolve => {
-            if(resolve.isConfirmed){
+            if (resolve.isConfirmed) {
                 //establezco el localStorage a vacío
                 localStorage.setItem("Carrito", "[]");
 
@@ -392,8 +401,8 @@ function vaciarCarrito() {
 };
 
 //funcion para dismiunuir la cantidad de un producto en el carrito
-function disminuirProducto (e){
-    if (e.target.matches("#menos")){
+function disminuirProducto(e) {
+    if (e.target.matches("#menos")) {
         // if (e.target.nextElementSibling.textContent > 1){
         //     e.target.nextElementSibling.textContent--;
         // } else {
@@ -413,12 +422,12 @@ function disminuirProducto (e){
             };
 
             obj.cantidad <= 1 ? null : obj.cantidad--;
-            
-        });
 
+        });
+        console.log(array);
         // Convierto el array a string y lo envio al local storage
         localStorage.setItem("Carrito", JSON.stringify(array));
-
+        
         const name = e.target.parentElement.parentElement.previousElementSibling.firstElementChild.getAttribute("alt");
         //usando la librería toastify
         Toastify({
@@ -436,8 +445,8 @@ function disminuirProducto (e){
 }
 
 //función para aumentar la cantidad de un producto en el carrito
-function aumentarProducto (e){
-    if (e.target.matches("#mas")){
+function aumentarProducto(e) {
+    if (e.target.matches("#mas")) {
         e.target.previousElementSibling.textContent++;
 
         //actualizo el carrito 
@@ -451,7 +460,7 @@ function aumentarProducto (e){
             // };
             obj.id == e.target.parentElement.id ? obj.cantidad++ : null;
         });
-
+        console.log(array);
         // Convierto el array a string y lo envio al local storage
         localStorage.setItem("Carrito", JSON.stringify(array));
 
@@ -472,7 +481,7 @@ function aumentarProducto (e){
 }
 
 //función para mostrar carrito 
-function mostrarCarrito(e){
+function mostrarCarrito(e) {
     // e.stopPropagation();
     // if (e.target.matches("#carrito")){
     //     $aside.classList.toggle("mostrarCarrito");
@@ -483,9 +492,9 @@ function mostrarCarrito(e){
 };
 
 //función para el modo oscuro
-function modoOscuro(e){
-    if (e.target.matches("#darkTheme")){
-        if(localStorage.getItem("modoOscuro") === "normal"){
+function modoOscuro(e) {
+    if (e.target.matches("#darkTheme")) {
+        if (localStorage.getItem("modoOscuro") === "normal") {
             d.querySelector("body").classList.add("dark");
             localStorage.setItem("modoOscuro", "oscuro")
             e.target.textContent = "☀️";
