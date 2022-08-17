@@ -49,9 +49,7 @@ function crearCards() {
         const botones = $main.querySelectorAll(".botonProd");
         const array = JSON.parse(localStorage.getItem("Carrito"));
         for (const item of array) {
-
             for (const btns of botones) {
-
                 if (item.id == btns.id) {
                     btns.disabled = true;
                     btns.innerText = "Comprado";
@@ -66,8 +64,8 @@ function crearCards() {
 function cargandoEvents() {
     $main.addEventListener("click", agregarProducto);//evento para agregar productos
     //eventos para mostrar el Carrito
-    $header.addEventListener("click", mostrarCarrito);
-    $main.addEventListener("click", mostrarCarrito);
+    d.addEventListener("click", mostrarCarrito);
+    // $aside.addEventListener("click", mostrarCarrito);
     //evento para el modo oscuro
     $main.addEventListener("click", modoOscuro)
     //evento para poder vaciar el carrito de compras desde que se inicie o actualice la página
@@ -75,6 +73,10 @@ function cargandoEvents() {
     //a cada <span> le agrego un boton con un evento para aumentar o dismunuir un producto
     $aside.addEventListener("click", aumentarProducto);
     $aside.addEventListener("click", disminuirProducto);
+    //evento para mostra el buscador
+    d.addEventListener("click", buscadorProd);
+    //evento filtrador del buscador
+    $header.addEventListener("keyup", filtrador)
 }
 
 // Funciones de Eventos DOMContentLoaded para que imprima las carts con el localStorage
@@ -140,7 +142,7 @@ d.addEventListener("DOMContentLoaded", () => {
 function agregarProducto(e) {
 
     //comprobamos si el evento fue en un boton
-    if (e.target.matches("button")) {
+    if (e.target.matches(".botonProd")) {
         const name = e.target.parentElement;
         //usando la librería toastify
         Toastify({
@@ -209,7 +211,7 @@ function agregarProducto(e) {
             $containerProd.prepend($fragment)//pone de primer hijo 
 
             //hago que los botones de deshabiliten si es que fueron seleccionado y guardados en el localStorage
-            const botones = $main.querySelectorAll("button");
+            const botones = $main.querySelectorAll(".botonProd");
 
             for (const item of array) {
                 for (const btns of botones) {
@@ -424,7 +426,6 @@ function disminuirProducto(e) {
             obj.cantidad <= 1 ? null : obj.cantidad--;
 
         });
-        console.log(array);
         // Convierto el array a string y lo envio al local storage
         localStorage.setItem("Carrito", JSON.stringify(array));
         
@@ -460,7 +461,6 @@ function aumentarProducto(e) {
             // };
             obj.id == e.target.parentElement.id ? obj.cantidad++ : null;
         });
-        console.log(array);
         // Convierto el array a string y lo envio al local storage
         localStorage.setItem("Carrito", JSON.stringify(array));
 
@@ -482,13 +482,13 @@ function aumentarProducto(e) {
 
 //función para mostrar carrito 
 function mostrarCarrito(e) {
-    // e.stopPropagation();
-    // if (e.target.matches("#carrito")){
-    //     $aside.classList.toggle("mostrarCarrito");
-    // } else {
-    //     $aside.classList.remove("mostrarCarrito");
-    // };
-    e.target.matches("#carrito") ? $aside.classList.toggle("mostrarCarrito") : $aside.classList.remove("mostrarCarrito");
+    if (e.target.matches("#carrito")){
+        $aside.classList.toggle("mostrarCarrito");
+    } else if (e.target.matches("aside *")){
+        $aside.classList.add("mostrarCarrito");
+    } else {
+        $aside.classList.remove("mostrarCarrito");
+    }
 };
 
 //función para el modo oscuro
@@ -507,3 +507,105 @@ function modoOscuro(e) {
         };
     };
 };
+
+//función para mostrar el buscador de productos
+const buscadorProd = async(e) => {
+    if (e.target.matches("#searchChild")){
+        const $buscadorHijo = d.querySelector("#searchChild");
+        const $buscadorInput = d.querySelector("#inputChild");
+        const $buscadorInputChild = d.querySelector("#inputChildDivChild")
+        $buscadorHijo.classList.add("d-none");
+        $buscadorInput.classList.remove("d-none")
+        const array = await fetch("./productos.json");
+        const data = await array.json();
+        data.forEach((obj) => {
+            //crea una ul y agrego el HTML al fragment
+            const $li = d.createElement("li");
+            $li.classList.add("productosLista")
+            $li.innerHTML = `${obj.nombre}`;
+            $li.addEventListener("click", buscarFiltro)
+            $fragment.appendChild($li);
+        });
+        //agrego el fragment al div
+        $buscadorInputChild.appendChild($fragment);
+
+        d.querySelector("#filtrador").focus();
+        d.querySelectorAll(".productos").forEach(prod => {
+            prod.classList.remove("d-none") 
+        });
+
+        if (localStorage.getItem("modoOscuro") === "normal"){
+            $header.classList.add("buscador");
+            d.querySelector("body").classList.add("buscador");
+        }
+    };
+
+    if (!e.target.matches("#search *")){
+        const $buscadorSearch = d.querySelector("#search");
+        $buscadorSearch.innerHTML=`
+            <i id="searchChild" class="fa-solid fa-magnifying-glass"></i>
+            <div id="inputChild" class="d-none">
+                <input id="filtrador" type="search" placeholder="Buscar producto">
+                <ul id="inputChildDivChild">
+
+                </ul>
+            </div>
+        `;
+        $header.classList.remove("buscador");
+        d.querySelector("body").classList.remove("buscador");
+    };  
+
+};
+
+//función para filtrar en el buscador
+function filtrador(e){
+    if (e.target.matches("#filtrador")){
+        d.querySelectorAll(".productosLista").forEach(prod => {
+            prod.textContent.toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()) ? prod.classList.remove("d-none") : prod.classList.add("d-none")
+        });
+    };
+
+    if (e.key === "Enter"){
+        d.querySelectorAll(".productos").forEach(prod => {
+            prod.firstElementChild.getAttribute("alt").toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()) ? prod.classList.remove("d-none") : prod.classList.add("d-none")
+        });
+
+
+        $header.classList.remove("buscador");
+        d.querySelector("body").classList.remove("buscador");
+        
+        const $buscadorSearch = d.querySelector("#search");
+        $buscadorSearch.innerHTML=`
+            <i id="searchChild" class="fa-solid fa-magnifying-glass"></i>
+            <div id="inputChild" class="d-none">
+                <input id="filtrador" type="search" placeholder="Buscar producto">
+                <ul id="inputChildDivChild">
+
+                </ul>
+            </div>
+        `;
+    }
+
+    // if (e.key === "Backspace"){
+    //     d.querySelectorAll(".productos").forEach(prod => {
+    //         prod.firstElementChild.getAttribute("alt").toLocaleLowerCase().includes(e.target.value.toLocaleLowerCase()) ? prod.classList.remove("d-none") : null
+    //     });
+    // };
+
+};
+
+const buscarFiltro = e => {
+    d.querySelectorAll(".productos").forEach(prod => {
+        prod.firstElementChild.getAttribute("alt").toLocaleLowerCase().includes(e.target.textContent.toLocaleLowerCase()) ? prod.classList.remove("d-none") : prod.classList.add("d-none")
+    });
+    const $buscadorSearch = d.querySelector("#search");
+    $buscadorSearch.innerHTML=`
+        <i id="searchChild" class="fa-solid fa-magnifying-glass"></i>
+        <div id="inputChild" class="d-none">
+            <input id="filtrador" type="search" placeholder="Buscar producto">
+            <ul id="inputChildDivChild">
+
+            </ul>
+        </div>
+    `;
+}

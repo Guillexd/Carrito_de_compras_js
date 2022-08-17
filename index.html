@@ -23,10 +23,18 @@
     <header class="container-fluid">
         <nav class="d-flex justify-content-around">
             <span>Tiendas Guille</span>
-            <div>
-                <input type="search" placeholder="Buscar">
+            <div class="d-flex align-items-center">
+                <div id="search">
+                    <i id="searchChild" class="fa-solid fa-magnifying-glass"></i>
+                    <div id="inputChild" class="d-none">
+                        <input id="filtrador" type="search" placeholder="Buscar producto">
+                        <ul id="inputChildDivChild">
+                            <!-- aquí va la lista -->
+                        </ul>
+                    </div>
+                </div>
     
-                <i id="carrito" class="fa-solid fa-cart-shopping logito ps-4"></i>
+                <i id="carrito" class="fa-solid fa-cart-shopping logito px-2"></i>
                 <span class="contadorDelCarrito px-2"></span>
             </div>
         </nav>

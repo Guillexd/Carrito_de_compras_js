@@ -13,6 +13,9 @@
     transition: all .3s ease-in-out;
     text-decoration: none;
 }
+.buscador{
+    background-color: #000000f1 !important;
+}
 
 body::-webkit-scrollbar{
     background-color: unset;
@@ -52,11 +55,58 @@ header nav span{
     color: rgb(0, 202, 0);
 }
 
-header nav div input {
+header nav div #search{
+    width: 20vw;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+header nav div #search #searchChild{
+    align-self: flex-end;
+}
+
+/* modo oscuro */
+.dark nav div #search #searchChild{
+    color: #fff;
+}
+
+header nav div #search #inputChild input{
     outline: none;
     border: none;
-    border-radius: 10%;
     padding: 10px;
+    width: 100%;
+}
+
+header nav div #search #inputChild #inputChildDivChild{
+    position: absolute;
+    background-color: #00000065;
+    width: 100%;
+    color: #fff;
+    list-style: none;
+    text-align: center;
+    overflow-y: auto;
+    max-height: 10rem;
+}
+
+header nav div #search #inputChild #inputChildDivChild::-webkit-scrollbar {
+    background-color: unset;
+}
+
+header nav div #search #inputChild #inputChildDivChild::-webkit-scrollbar-thumb {
+    background-color: var(--main-scrollbar-bg-color-dark);
+    border-radius: 10px;
+}
+
+header nav div #search #inputChild #inputChildDivChild li{
+    padding: 5px 0;
+    transform: translateX(-8%);
+    width: 100%;
+    cursor: pointer;
+}
+
+header nav div #search #inputChild #inputChildDivChild li:hover{
+    background-color: #ede5e57a;
 }
 
 header nav div .logito{
@@ -146,7 +196,7 @@ aside{
     width: 50vw;
     position: fixed;
     height: calc(100vh - 3.9rem);
-    top: calc(100% - (100% - 3.9rem));
+    top: calc(100% - (100% - 3rem));
     background-color: rgba(0, 0, 0, 0.801);
     color: aqua;
     transform: translateX(-50vw);
