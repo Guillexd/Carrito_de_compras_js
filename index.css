@@ -339,11 +339,17 @@ form{
     background-color: #fff;
     border-radius: 10px;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     overflow-y: auto;
     height: 70%;
+    flex-wrap: wrap;
+}
+
+.formularioDiv{
+    /* width: 500px; */
+    position: relative;
 }
 
 .formularioDivDiv{
@@ -394,7 +400,12 @@ form{
 }
 
 /* carrito.html */
-.formulario-body main form #productosLocalStorage img{
-    width: 100px;
-    height: 100px;
+.formulario-body main form #productosLocalStorage{
+    border: solid 2px black;
+    padding: 5px;
+}
+
+.formulario-body main form #productosLocalStorage:hover{
+    border-color: #4158D0;
+    background-color: #85FFBD;
 }
