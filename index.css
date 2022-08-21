@@ -13,6 +13,8 @@
     transition: all .3s ease-in-out;
     text-decoration: none;
 }
+
+/* INDEX.HTML */
 .buscador{
     background-color: #000000f1 !important;
 }
@@ -317,7 +319,82 @@ body .tostadas{
 }
 
 body .contenedor{
-    border-radius: 100px;
+    border-radius: 10px;
     background-color: #85FFBD;
     background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+}
+
+/* CARRITO.HTML */
+.formulario-body{
+    background: #E5E5E5;
+}
+
+.mainForm{
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+form{
+    background-color: #fff;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    height: 70%;
+}
+
+.formularioDivDiv{
+    display: flex;
+    justify-content: center;
+}
+
+.formularioDivDivDiv{
+    position: relative;
+}
+
+.formularioLabel{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: gray;
+    transition: .3s ease all;
+}
+
+.formularioInput{
+    border: none;
+    border-bottom: solid 1px black;
+    outline: none;
+}
+
+.formularioInput:focus~.formularioLabel,
+.formularioInput:valid ~ label{
+    top: -20px;
+    font-size: 14px;
+    color:#4158D0;
+}
+
+.formulario__validacion-estado{
+    color: rgb(170, 0, 0);
+}
+
+.formulario-btn{
+    padding: 5px 10px;
+    border-radius: 10px;
+    border-color:#353535;
+}
+
+.formularioDivDiv .fa-check-circle{
+    color: #8fd527;
+}
+.formularioDivDiv .fa-times-circle{
+    color: darkred;
+}
+
+/* carrito.html */
+.formulario-body main form #productosLocalStorage img{
+    width: 100px;
+    height: 100px;
 }
