@@ -21,8 +21,8 @@
 </head>
 <body class="formulario-body">
     <main class="container mainForm">
-		<form class="formulario w-75 py-5" id="formulario">
-
+		<form class="formulario w-75 py-5 position-relative" id="formulario">
+			<a href="../index.html" rel="noopener noreferrer" id="volver"><input type="button" value="volver" id="volver-btn"></a> 
 			<!-- Grupo: Nombre -->
 			<div class="formularioDiv w-75">
 				<div class="formularioDivDiv">
@@ -62,7 +62,9 @@
 
 			<!-- Aqui van los productos -->
 			<div id="productosLocalStorage" class="w-50">
-				Precio Total: $0
+				<div id="productosLocalStorageTotal">
+					Precio Total: $0
+				</div>
 			</div>
 
 			<!-- Grupo: Terminos y Condiciones -->

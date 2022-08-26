@@ -91,31 +91,31 @@ header nav div #search #inputChild #inputChildDivChild{
     max-height: 10rem;
 }
 
-header nav div #search #inputChild #inputChildDivChild::-webkit-scrollbar {
+header nav #buscadorPadre #search #inputChild #inputChildDivChild::-webkit-scrollbar {
     background-color: unset;
 }
 
-header nav div #search #inputChild #inputChildDivChild::-webkit-scrollbar-thumb {
+header nav #buscadorPadre #search #inputChild #inputChildDivChild::-webkit-scrollbar-thumb {
     background-color: var(--main-scrollbar-bg-color-dark);
     border-radius: 10px;
 }
 
-header nav div #search #inputChild #inputChildDivChild li{
+header nav #buscadorPadre #search #inputChild #inputChildDivChild li{
     padding: 5px 0;
     transform: translateX(-8%);
     width: 100%;
     cursor: pointer;
 }
 
-header nav div #search #inputChild #inputChildDivChild li:hover{
+header nav #buscadorPadre #search #inputChild #inputChildDivChild li:hover{
     background-color: #ede5e57a;
 }
 
-header nav div .logito{
+header nav #buscadorPadre .logito{
     font-size: 30px;
 }
     /* modo oscuro */
-.dark header nav div .logito {
+.dark header nav #buscadorPadre .logito {
     color: white;
 }
 
@@ -197,7 +197,7 @@ aside{
     padding: 10px;
     width: 50vw;
     position: fixed;
-    height: calc(100vh - 3.9rem);
+    height: calc(100vh - 3rem);
     top: calc(100% - (100% - 3rem));
     background-color: rgba(0, 0, 0, 0.801);
     color: aqua;
@@ -348,7 +348,6 @@ form{
 }
 
 .formularioDiv{
-    /* width: 500px; */
     position: relative;
 }
 
@@ -405,7 +404,93 @@ form{
     padding: 5px;
 }
 
+.formulario-body main form #productosLocalStorage .cards{
+    border-bottom: solid 2px black;
+}
+
 .formulario-body main form #productosLocalStorage:hover{
     border-color: #4158D0;
     background-color: #85FFBD;
+}
+
+.formulario-body main form #productosLocalStorage .cards:hover{
+    background-color: #4159d072;
+}
+
+.formulario-body .mainForm #formulario #volver{
+    position: absolute;
+    top: 2%;
+    right: 15%;
+}
+
+.formulario-body .mainForm #formulario #volver-btn{
+    background-color: aqua;
+    padding: 5px 20px;
+    font-size: 22px;
+    border: none;
+    transition: all .2s ease-out;
+}
+
+.formulario-body .mainForm #formulario #volver-btn:hover{
+    box-shadow: 10px 10px 20px 5px black;
+}
+
+.formulario-body .mainForm #formulario #productosLocalStorage .cards .img_ls img{
+    width: 100px;
+    height: 100px;
+}
+
+.formulario-body main form #productosLocalStorage #productosLocalStorageTotal{
+    border: solid 2px black;
+    padding: 5px;
+}
+
+@media screen and (max-width: 992px){
+    header .buscadorPadre #buscadorPadre #carrito{
+        display: none;
+    }
+
+    header .buscadorPadre #buscadorPadre .contadorDelCarrito{
+        display: none;
+    }
+
+    header .buscadorPadre>span{
+        display: none;
+    }
+
+    header .buscadorPadre #buscadorPadre #search{
+        width: 100%;
+    }
+
+    form{
+        height: 100%;
+    }
+
+    .mainForm .formulario #volver{
+        z-index: 10;
+    }
+    .mainForm .formulario .formularioDiv{
+        margin-top: 20px;
+    }
+
+    .formulario-body main form #productosLocalStorage{
+        width: 100% !important;
+    }
+
+    .formulario-body main form #productosLocalStorage section{
+        padding: 0 !important;
+    }
+
+    .mainForm .formulario .formularioDiv .formularioDivDiv .formularioDivDivDiv .formularioInput{
+        width: 100%;
+    }
+
+    aside{
+        width: 100vw;
+        transform: translateX(-100vw);
+    }
+
+    .tostadas-pro:active{
+        display: none;
+    }
 }

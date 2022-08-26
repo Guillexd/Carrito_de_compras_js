@@ -8,14 +8,6 @@ const $main = d.querySelector("main"),
     $header = d.querySelector("header"),
     $contadorDelCArrito = d.querySelector(".contadorDelCarrito");
 
-//creación del localStorage
-//Usando el operador ternario
-!localStorage.getItem("Carrito") ? localStorage.setItem("Carrito", "[]") : null
-
-//modo oscuro en el localStorage
-//usando el operador terniario
-localStorage.getItem("Carrito") ? null : localStorage.setItem("Carrito", "[]")
-
 function crearCards() {
     //recorremos el array de productos
     fetch("./productos.json").then(resp => resp.json())
@@ -70,10 +62,21 @@ function cargandoEvents() {
     d.addEventListener("click", buscadorProd);
     //evento filtrador del buscador
     $header.addEventListener("keyup", filtrador)
+    //evento para hacer responsivo el buscador
+    d.addEventListener("click", buscadorDiseño)
 }
 
 // Funciones de Eventos DOMContentLoaded para que imprima las carts con el localStorage
 d.addEventListener("DOMContentLoaded", () => {
+
+    //creación del localStorage
+    //Usando el operador ternario
+    !localStorage.getItem("Carrito") ? localStorage.setItem("Carrito", "[]") : null
+
+    //modo oscuro en el localStorage
+    //usando el operador terniario
+    localStorage.getItem("modoOscuro") ? null : localStorage.setItem("modoOscuro", "[normal]")
+
     //modoOscuro
     if (localStorage.getItem("modoOscuro") === "oscuro") {
         d.querySelector("body").classList.add("dark");
@@ -428,6 +431,7 @@ function disminuirProducto(e) {
             style: {
                 background: "linear-gradient(to right, #00b09b, #96c93d)",
             },
+            className: "tostadas-prod"
         }).showToast();
     }
 }
@@ -460,6 +464,7 @@ function aumentarProducto(e) {
             style: {
                 background: "linear-gradient(to right, #00b09b, #96c93d)",
             },
+            className: "tostadas-prod"
         }).showToast();
     }
 }
@@ -586,4 +591,17 @@ const buscarFiltro = e => {
             </ul>
         </div>
     `;
+}
+
+//función para agregar estilos al buscador
+function buscadorDiseño(e){
+
+    if (e.target.matches("#search *")){
+        const buscadorDiseñoVariable = d.querySelector("nav");
+        buscadorDiseñoVariable.classList.add("buscadorPadre");
+    } else {
+        const buscadorDiseñoVariable = d.querySelector("nav");
+        buscadorDiseñoVariable.classList.remove("buscadorPadre");
+    }
+    
 }
