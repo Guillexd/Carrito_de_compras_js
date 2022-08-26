@@ -118,7 +118,6 @@ const validarFormulario = (e) => {
 //funcion para validar inputs parte 2
 const validarCampo = (expresion, input, campo) => {
 	if(expresion.test(input.value)){
-        console.log("funciona")
 		d.getElementById(`texto-${campo}`).classList.remove("opacity-100");
         d.getElementById(`texto-${campo}`).classList.add("opacity-0");
 		d.querySelector(`#icon-${campo}`).classList.add("fa-check-circle");
@@ -127,7 +126,6 @@ const validarCampo = (expresion, input, campo) => {
         d.querySelector(`#icon-${campo}`).classList.remove("opacity-0");
 		campos[campo] = true;
 	} else {
-        console.log("jaja no");
 		d.getElementById(`texto-${campo}`).classList.remove("opacity-0");
         d.getElementById(`texto-${campo}`).classList.add("opacity-100");
 		d.querySelector(`#icon-${campo}`).classList.add('fa-times-circle');

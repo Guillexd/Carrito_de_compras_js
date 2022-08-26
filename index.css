@@ -489,8 +489,4 @@ form{
         width: 100vw;
         transform: translateX(-100vw);
     }
-
-    .tostadas-pro:active{
-        display: none;
-    }
 }
